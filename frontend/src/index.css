@@ -1,0 +1,327 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root Variables for Beautiful Dark Theme */
+:root {
+  --bg-dark: #000000;
+  --bg-dark-elevated: #0a0e14;
+  --bg-card: #0f1419;
+  --bg-hover: #1a1f27;
+  --border-subtle: #1f2933;
+  --border-active: #2d3748;
+  --text-primary: #f3f4f6;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent-cyan: #22d3ee;
+  --accent-cyan-dark: #0e7490;
+  --accent-cyan-subtle: #164e63;
+}
+
+body {
+  @apply bg-black text-[#f3f4f6] antialiased;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   CUSTOM DARK SCROLLBAR - FIXES WHITE SCROLLBAR
+   ============================================ */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 #0a0e14;
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e14;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #374151 0%, #4b5563 100%);
+  border-radius: 10px;
+  border: 2px solid #0a0e14;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4b5563 0%, #6b7280 100%);
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+}
+
+::-webkit-scrollbar-corner {
+  background: #0a0e14;
+}
+
+/* ============================================
+   ANIMATIONS & KEYFRAMES
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.4),
+      0 0 40px rgba(34, 211, 238, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(34, 211, 238, 0.6),
+      0 0 50px rgba(34, 211, 238, 0.3);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(34, 211, 238, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(34, 211, 238, 0.1) 50%,
+      transparent 100%);
+  background-size: 2000px 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   GLASSMORPHISM EFFECTS
+   ============================================ */
+
+.glass-effect {
+  background: rgba(15, 20, 25, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-effect-strong {
+  background: rgba(10, 14, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   GRADIENT EFFECTS
+   ============================================ */
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(145deg, #0a0e14 0%, #0f1419 100%);
+  border: 1px solid transparent;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(145deg, #22d3ee 0%, #a78bfa 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   TEXT EFFECTS
+   ============================================ */
+
+.text-gradient {
+  background: linear-gradient(135deg, #22d3ee 0%, #0e7490 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5),
+    0 0 20px rgba(34, 211, 238, 0.3),
+    0 0 30px rgba(34, 211, 238, 0.2);
+}
+
+/* ============================================
+   SHADOW EFFECTS
+   ============================================ */
+
+.shadow-cyan {
+  box-shadow: 0 4px 20px rgba(34, 211, 238, 0.25),
+    0 0 40px rgba(34, 211, 238, 0.1);
+}
+
+.shadow-purple {
+  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25),
+    0 0 40px rgba(167, 139, 250, 0.1);
+}
+
+.shadow-elevated {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5),
+    0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-bounce {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   SELECTION STYLES
+   ============================================ */
+
+::selection {
+  background-color: rgba(34, 211, 238, 0.3);
+  color: #f3f4f6;
+}
+
+::-moz-selection {
+  background-color: rgba(34, 211, 238, 0.3);
+  color: #f3f4f6;
+}
+
+/* ============================================
+   FOCUS STYLES
+   ============================================ */
+
+*:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   SMOOTH SCROLL
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
