@@ -1,0 +1,20 @@
+# Dependencies - reinstall with: npm install
+node_modules/
+
+# Build output and Vite cache
+dist/
+.vite/
+
+# Secrets - never commit
+.env
+.env.*
+!.env.example
+
+# OCR language data - tesseract.js downloads it
+*.traineddata
+
+# Logs and OS files
+*.log
+npm-debug.log*
+Thumbs.db
+.DS_Store
