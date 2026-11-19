@@ -11,7 +11,8 @@
 - Ollama runs in Docker container ollama-local (ollama/ollama v0.40.16 since 2026-11-19, GPU on, port 127.0.0.1:11434, OLLAMA_CONTEXT_LENGTH=8192, flash attention, q8_0 KV cache). Models live in Docker volume ollama-models. Installed: qwen3.5:4b (app chat model candidate, thinks by default - send think:false for speed), qwen2.5-coder:7b (local-coder; does NOT fit fully on GPU), embeddinggemma (run on CPU with options.num_gpu=0).
 - Measured (backend/eval/results/2026-11-19-model-measure.md): qwen3.5:4b stays 100% GPU up to num_ctx 32768 with the embedder on CPU; 65536 spills to CPU.
 - Run Ollama commands as: docker exec ollama-local ollama <command>
-- pal runs in a Linux container: for every pal call set working_directory_absolute_path to /tmp (it rejects Windows paths like E:\...).- OmniRoute runs in container omniroute at http://localhost:20128.
+- pal runs in a Linux container: for every pal call set working_directory_absolute_path to /tmp (it rejects Windows paths like E:\...).
+- OmniRoute runs in container omniroute at http://localhost:20128.
 - Docker Desktop must be running for Ollama, OmniRoute and pal. The owner starts it with: & "$env:USERPROFILE\tools\start-docker-safe.ps1"
 - App data folder: D:\LLM storage (chats, profile). Never delete or rewrite it.
 
