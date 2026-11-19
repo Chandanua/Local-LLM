@@ -7,6 +7,24 @@ import multer from 'multer';
 import pdfParse from 'pdf-parse';
 import Tesseract from 'tesseract.js';
 
+// --- Minimal config (P0.1). Full config module comes in P1. ---
+function readPositiveInt(name, fallback) {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isInteger(n) || n <= 0 || String(n) !== String(raw).trim()) {
+    throw new Error(`Invalid ${name}="${raw}": expected a positive integer`);
+  }
+  return n;
+}
+const OLLAMA_HOST = (process.env.OLLAMA_HOST || 'http://127.0.0.1:11434').replace(/\/+$/, '');
+const CHAT_MODEL = process.env.CHAT_MODEL || 'qwen3.5:4b';
+const EMBED_MODEL = process.env.EMBED_MODEL || 'embeddinggemma';
+const DATA_DIR = process.env.DATA_DIR || 'D:\\LLM storage';
+const NUM_CTX = readPositiveInt('NUM_CTX', 32768);
+const NUM_PREDICT = readPositiveInt('NUM_PREDICT', 2048);
+const KEEP_ALIVE = process.env.KEEP_ALIVE || '30m';
+
 const app = express();
 
 const upload = multer({
@@ -124,8 +142,8 @@ Tone:
 - Friendly
 - Slightly flirty but respectful`,
 };
-const PROFILE_PATH = path.join('D:', 'LLM storage', 'memory', 'profile.json');
-const CHATS_ROOT = path.join('D:', 'LLM storage', 'chats');
+const PROFILE_PATH = path.join(DATA_DIR, 'memory', 'profile.json');
+const CHATS_ROOT = path.join(DATA_DIR, 'chats');
 const DEFAULT_PROFILE = {
   name: 'Chandan',
   tone: 'smart, calm, slightly playful dev buddy',
@@ -221,7 +239,7 @@ const ragStoreBySessionId = new Map();
 //   Name of the Ollama embedding model. Changing this will change behaviour
 //   and should be treated as a new configuration, not a tuning knob.
 const MAX_RAG_DOCUMENTS = 1000;
-const EMBEDDING_MODEL = 'embeddinggemma';
+const EMBEDDING_MODEL = EMBED_MODEL;
 const INITIAL_RETRIEVAL_K = 10;
 const FINAL_CONTEXT_CHUNKS = 4;
 const GLOBAL_RAG_DEBUG = process.env.RAG_DEBUG === '1';
@@ -911,12 +929,14 @@ async function embedTexts(texts) {
   const input = texts.filter((t) => typeof t === 'string' && t.trim().length > 0);
   if (!input.length) return [];
 
-  const res = await fetch('http://localhost:11434/api/embed', {
+  const res = await fetch(`${OLLAMA_HOST}/api/embed`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: EMBEDDING_MODEL,
       input,
+      keep_alive: KEEP_ALIVE,
+      options: { num_gpu: 0 },
     }),
   });
 
@@ -1684,13 +1704,16 @@ app.post('/chat', async (req, res) => {
 
     messagesForOllama.push({ role: 'user', content: message });
 
-    const ollamaRes = await fetch('http://localhost:11434/api/chat', {
+    const ollamaRes = await fetch(`${OLLAMA_HOST}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama3:8b',
+        model: CHAT_MODEL,
         stream: false,
         messages: messagesForOllama,
+        think: false,
+        keep_alive: KEEP_ALIVE,
+        options: { num_ctx: NUM_CTX, num_predict: NUM_PREDICT, temperature: 0.3 },
       }),
     });
 
@@ -1756,4 +1779,5 @@ app.post('/chat', async (req, res) => {
 const port = process.env.PORT ? Number(process.env.PORT) : 3001;
 app.listen(port, () => {
   console.log(`Backend listening on http://localhost:${port}`);
+  console.log(`[config] chat=${CHAT_MODEL} embed=${EMBED_MODEL} ollama=${OLLAMA_HOST} num_ctx=${NUM_CTX} data=${DATA_DIR}`);
 });
