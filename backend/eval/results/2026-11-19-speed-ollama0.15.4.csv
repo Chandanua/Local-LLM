@@ -1,0 +1,9 @@
+time,model,num_ctx,run,cold,eval_count,tok_s,ttft_ms,load_ms,processor,embed_processor
+2026-11-19T05:14:01.818Z,qwen2.5-coder:7b,4096,1,true,135,17.01,20813,19707,22%/78% CPU/GPU,
+2026-11-19T05:14:09.999Z,qwen2.5-coder:7b,4096,2,false,135,17.83,208,149,22%/78% CPU/GPU,
+2026-11-19T05:14:18.217Z,qwen2.5-coder:7b,4096,3,false,135,17.86,182,121,22%/78% CPU/GPU,
+2026-11-19T05:14:26.443Z,qwen2.5-coder:7b,4096,4,false,135,17.70,162,104,22%/78% CPU/GPU,
+2026-11-19T05:15:01.601Z,qwen2.5-coder:7b,8192,1,true,135,17.08,26239,26022,22%/78% CPU/GPU,
+2026-11-19T05:15:10.232Z,qwen2.5-coder:7b,8192,2,false,135,17.47,410,337,22%/78% CPU/GPU,
+2026-11-19T05:15:17.376Z,qwen2.5-coder:7b,8192,3,false,135,20.68,147,85,22%/78% CPU/GPU,
+2026-11-19T05:15:24.243Z,qwen2.5-coder:7b,8192,4,false,135,21.60,151,87,22%/78% CPU/GPU,
